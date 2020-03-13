@@ -1,6 +1,8 @@
 function setupApp() {
 
   const gameBoard = document.querySelector('.gameBoard')
+  const playerTurn = document.querySelector('.player')
+
   const cells = []
   const width = 6
   const column1 = [0, 6, 12, 18, 24, 30, 36]
@@ -48,10 +50,12 @@ function setupApp() {
     let color = 'blue'
     if (turn) {
       cell.classList.add('blue')
+      playerTurn.innerHTML = 'Player Turn: Red'
       color = 'blue'
       turn = false
     } else {
       cell.classList.add('red')
+      playerTurn.innerHTML = 'Player Turn: Blue'
       color = 'red'
       turn = true
     }
@@ -142,8 +146,8 @@ function setupApp() {
     for (let i = 0; i < 3; i++) {
       if (dir === 'topLeft') {
         nextPosition -= 7
-        if (column1.includes(nextPosition + 7) || topRow.includes(nextPosition)) {
-          return 
+        if (column1.includes(nextPosition + 7) || topRow.includes(nextPosition + 7)) {
+          return
         } else if (checkNextAlong(nextPosition, color)) {
           count++
         } else return
@@ -160,8 +164,8 @@ function setupApp() {
       }
       if (dir === 'bottomRight') {
         nextPosition += 7
-        if (column6.includes(nextPosition) || bottomRow.includes(nextPosition - 7)) {
-          return
+        if (column6.includes(nextPosition - 7) || bottomRow.includes(nextPosition - 7)) {
+          return count++
         } else if (checkNextAlong(nextPosition, color)) {
           count++
         } else return
@@ -169,7 +173,7 @@ function setupApp() {
       }
       if (dir === 'topRight') {
         nextPosition -= 5
-        if (column6.includes(nextPosition) || topRow.includes(nextPosition)) {
+        if (column6.includes(nextPosition + 5) || topRow.includes(nextPosition + 5)) {
           return
         } else if (checkNextAlong(nextPosition, color)) {
           count++
@@ -210,6 +214,14 @@ function setupApp() {
     }
     if (count === 3) {
       console.log('WINNER')
+      playerTurn.innerHTML = `Winner is ${color} `
+      setTimeout(() => {
+        cells.forEach((c) => {
+          c.classList.remove('red')
+          c.classList.remove('blue')
+        })
+      }, 1000)
+
     }
   }
 
