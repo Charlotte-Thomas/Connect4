@@ -97,11 +97,11 @@ function setupApp() {
           direction.push('topLeft')
 
         }
-        // never need to check top
-        // if (c === index - 6) {
-        //   direction.push('top')
+        //never need to check top
+        if (c === index - 6) {
+          direction.push('top')
 
-        // }
+        }
         if (c === index - 5) {
           direction.push('topRight')
 
@@ -142,22 +142,67 @@ function setupApp() {
     for (let i = 0; i < 3; i++) {
       if (dir === 'topLeft') {
         nextPosition -= 7
-        if (column1.includes(nextPosition) || topRow.includes(nextPosition)) {
-          return
-        } else if (cells[nextPosition].classList.contains(color)){
+        if (column1.includes(nextPosition + 7) || topRow.includes(nextPosition)) {
+          return 
+        } else if (checkNextAlong(nextPosition, color)) {
           count++
-        } else {
-          return
-        }
+        } else return
         console.log('count', count)
       }
-      if (dir === 'top') {
-        nextPosition -= 6
+      if (dir === 'bottomLeft') {
+        nextPosition += 5
+        if (column1.includes(nextPosition - 5) || bottomRow.includes(nextPosition - 5)) {
+          return
+        } else if (checkNextAlong(nextPosition, color)) {
+          count++
+        } else return
+        console.log('count', count)
+      }
+      if (dir === 'bottomRight') {
+        nextPosition += 7
+        if (column6.includes(nextPosition) || bottomRow.includes(nextPosition - 7)) {
+          return
+        } else if (checkNextAlong(nextPosition, color)) {
+          count++
+        } else return
+        console.log('count', count)
+      }
+      if (dir === 'topRight') {
+        nextPosition -= 5
+        if (column6.includes(nextPosition) || topRow.includes(nextPosition)) {
+          return
+        } else if (checkNextAlong(nextPosition, color)) {
+          count++
+        } else return
+        console.log('count', count)
+      }
+      if (dir === 'left') {
+        nextPosition -= 1
         if (checkNextAlong(nextPosition, color)) {
           count++
-        } else {
-          return
+        } else return
+        console.log('count', count)
+        if (column1.includes(nextPosition)) {
+          return count++
         }
+      }
+      if (dir === 'right') {
+        nextPosition += 1
+        if (checkNextAlong(nextPosition, color)) {
+          count++
+        } else return
+        console.log('count', count)
+        if (column6.includes(nextPosition)) {
+          return count++
+        }
+      }
+      if (dir === 'bottom') {
+        nextPosition += 6
+        if (bottomRow.includes(nextPosition - 6)) {
+          return count++
+        } else if (checkNextAlong(nextPosition, color)) {
+          count++
+        } else return
         console.log('count', count)
       }
 
@@ -169,9 +214,7 @@ function setupApp() {
   }
 
   function checkNextAlong(nextPosition, color) {
-    if (column1.includes(nextPosition) || topRow.includes(nextPosition)) {
-      return false
-    } else if (cells[nextPosition].classList.contains(color)){
+    if (cells[nextPosition].classList.contains(color)) {
       return true
     } else {
       return false
